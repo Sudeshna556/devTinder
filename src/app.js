@@ -1,94 +1,25 @@
 const express = require('express');
 const connectDB = require("./config/db")
-const User = require("./models/user"); // Importing the user model
-const validationChecks = require('./utils/validations'); // Importing the validation function
+
 const app = express();
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser'); // Importing cookie-parser to handle cookies
+
+
+
+
 
 app.use(express.json()); // to parse JSON bodie
 app.use(cookieParser()); // Use cookie-parser middleware to parse cookies
 
+const authRouter = require('./routes/authRoutes'); // Importing auth routes
+const requestRouter = require('./routes/request'); // Importing request routes
+const profileRouter = require('./routes/profile'); // Importing profile routes
 
-//SignUp api to insert data into the database
-app.post("/signup", async(req,res) =>{
-    try{
-        // validation of data can be done here before saving to the database
-        validationChecks(req); // Call the validation function with the request object
+//defining the routes for each router 
+app.use('/', authRouter); 
+app.use('/', requestRouter);
+app.use('/', profileRouter); 
 
-        //encryption of password can be done here before saving to the database
-        const {name,email,password} = req.body; // Destructuring the request body to get email and password
-        const passwordHash = await bcrypt.hash(password,10); // Hashing the password with a salt rounds of 10
-
-
-        // Creating a new user instance with the provided data
-        const user = new User({name , email, password : passwordHash});
-        await user.save() // this returns a promise so need to use async-await or .then() to handle the response
-        res.send("User added successfully");    
-
-        //# In most of the moongose functions (such as save(), connect() etc) when we use them  we need to use async-await 
-    
-    }catch(err){
-        console.error("Error during signup:", err);
-    }
-
-})
-
-// login api to authenticate user
-
-app.post('/login',async(req,res) => {
-    try{
-    const {email,password} = req.body;
-    //since user is already signedup now Check if the user exists in the database
-    const checkLoginUser = await User.findOne({email:email});
-    if(!checkLoginUser){
-        return res.status(404).send("User not found, enter valid credentials");
-    }
-    //compare the pw with the hashed password in the database
-    const isPasswordValid = await bcrypt.compare(password, checkLoginUser.password);
-    if(isPasswordValid){
-        // If the password is valid, generate a JWT token
-        // The token will contain the user ID and can be used for authentication in subsequent requests
-        const token = await jwt.sign({_id : checkLoginUser._id}, "das@mail")
-        // Set the token in cookies for client-side access
-        res.cookie("token",token);
-        res.send("User authenticated successfully!!");
-    } else {
-        return res.status(401).send("Invalid credentials");
-    }
-    
-    }catch(err){
-        res.status(500).send("could not authenticate user");
-    }
-   
-})
-
-app.get("/profile",async(req,res) => {
-    try{
-        // Extract the token from cookies
-        // Assuming you have a middleware to parse cookies, or you can use a library like cookie-parser
-       
-        const cookies = req.cookies; 
-        const { token } = cookies; // Extract the token from cookies
-
-        if(!token){
-            throw new Error("No token provided");
-        }
-
-        //validate my token 
-        const isTokenValid = await jwt.verify(token,'das@mail'); // Verify the token
-
-        const {_id} = isTokenValid; // Extract the user ID from the token
-        
-        // Find the user by ID
-        const user = await User.findById(_id);
-        res.send(user);
-
-    }catch(err){
-        console.error("Error fetching profile:", err);
-    }
-})
 
 //GET api to Get User data from the database by email
 app.get("/user", async (req, res) => {
