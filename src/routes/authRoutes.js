@@ -63,4 +63,16 @@ authRouter.post('/login',async(req,res) => {
 })
 
 
+//logout api or clear the cookies
+
+authRouter.post("/logout", async(req,res)=>{
+    // Clear the token cookie to log out the user, basically set the cookie to null to clear it
+    // This will remove the token from the user's browser, effectively logging them out
+    res.cookie("token", null, {
+        expires : new Date(Date.now())  // Set the cookie to expire immediately
+    })
+    res.send("User logged out successfully");
+})
+
+
 module.exports = authRouter; // Export the authRouter to use in app.js

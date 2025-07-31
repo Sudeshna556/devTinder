@@ -19,4 +19,19 @@ const validationChecks = (req) => {
     }
 }
 
-module.exports = validationChecks; // Export the validation function
+// validation checks to edit profile
+
+const validateEditProfile = (req) =>{
+    
+    const allowedFieldforUpdate = ["name", "email", "address", "phone", "age","photoUrl", "skills"];
+
+    const isEditAllowed = Object.keys(req.body).every((field) => allowedFieldforUpdate.includes(field));
+
+    return isEditAllowed;
+    
+};
+
+module.exports = {
+    validationChecks,
+    validateEditProfile,
+ }; // Export the validation function
