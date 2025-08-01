@@ -1,9 +1,10 @@
 const express = require('express');
 const authRouter = express.Router();
 const User = require("../models/user"); // Importing the user model
-const validationChecks = require('../utils/validations'); // Importing the validation function
+const {validationChecks} = require('../utils/validations'); // Importing the validation function
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 
 
 
