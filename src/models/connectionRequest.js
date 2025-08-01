@@ -9,10 +9,12 @@ const connectionRequestSchema = new mongoose.Schema({
 
     SenderId : {
         type:mongoose.Schema.Types.ObjectId,
+        ref: 'User', // Reference to the User model 
         required: true
     },
     ReceiverId : {
         type : mongoose.Schema.Types.ObjectId,
+        ref: 'User', // Reference to the User model
         required: true
     },
     status : {
@@ -20,7 +22,6 @@ const connectionRequestSchema = new mongoose.Schema({
         required: true,
         enum :{
         values :  ['ignored', 'interested', 'accepted', 'rejected'],
-        default: 'pending',
         message : `{VALUE} is incorrect status type`
     },
 }
