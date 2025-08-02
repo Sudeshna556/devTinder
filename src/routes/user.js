@@ -6,11 +6,11 @@ const ConnectionRequest = require("../models/connectionRequest");
 userRouter.get("/check-requests/all-received-requests", userAuth, async (req, res) => {
     try {
         // Extracting the logged-in user's ID
-        const loggedInUserId = req.user._id;
+        const loggedInUserId = req.user;
 
         // Fetching all connection requests where the logged-in user is the receiver
         const receivedRequests = await ConnectionRequest.find({
-             ReceiverId: loggedInUserId ,
+             ReceiverId: loggedInUserId._id, // Using the ID of the logged-in user,
              status : "interested" // Only interested requests
             }).populate("SenderId", ["name", "email", "profilePicture"]); // Populating SenderId with user details (name, email, profilePicture)
             
