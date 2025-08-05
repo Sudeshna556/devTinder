@@ -1,7 +1,9 @@
 -
 -
--creating Navbar component using daisyUI
--install react router dom
+- creating Navbar component using daisyUI
+- install react router dom
+- created body.js and rendered the child routes,navbar and footer as well
+- added rotes and child routes into app.js
 
 
 
