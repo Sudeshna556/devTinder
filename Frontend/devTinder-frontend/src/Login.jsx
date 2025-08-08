@@ -1,11 +1,25 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
 
   //state variables
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("zoro@gmail.com");
+  const [password, setPassword] = useState("Zoro@1234");
+
+  const handleLogin = async () => {
+   try{
+    const response = await axios.post("http://localhost:3000/login", {
+      email,
+      password,
+    },{withCredentials: true}); // Include credentials in the request
+   }catch (error) {
+    console.error("Login failed:", error);
+ 
+     
+   }
+  }
 
   return (
     
@@ -58,7 +72,7 @@ const Login = () => {
           </p>
         </div>
         <div className="card-actions justify-center mr-14 mb-3 -mt-4">
-          <button className="btn btn-primary">Login</button>
+          <button className="btn btn-primary" onClick = {handleLogin}>Login</button>
         </div>
       </div>
     </div>

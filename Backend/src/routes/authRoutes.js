@@ -52,7 +52,7 @@ authRouter.post('/login',async(req,res) => {
         const token = await jwt.sign({_id : checkLoginUser._id}, "das@mail")
         // Set the token in cookies for client-side access
         res.cookie("token",token);
-        res.send("User authenticated successfully!!");
+        res.send("User authenticated successfully!!"); // shows at the browsers console->network->response
     } else {
         return res.status(401).send("Invalid credentials");
     }
