@@ -9,7 +9,7 @@ const Body = () => {
         <Navbar/>
         <Outlet/>
         {/* The Outlet component is used to render child routes */}
-        <Footer/>
+        {/* <Footer/> */}
     </div>
   )
 }
