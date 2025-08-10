@@ -7,16 +7,10 @@ const cors = require('cors'); // Importing CORS to handle cross-origin requests
 
 app.use(cors(
     {
-        origin: 'http://localhost:5173/', // Allow requests from this origin
+        origin: 'http://localhost:5173', // Allow requests from this origin
         credentials: true, // Allow credentials (cookies, authorization headers, etc.)
     }
 )); // Use CORS middleware to allow cross-origin requests
-app.use(express.json()) ; // Use express.json() middleware to parse JSON bodies
-app.use(express.json(cookieParser())); // Use express.json() middleware with cookie-parser to parse JSON bodies with cookies
-
-
-
-
 
 app.use(express.json()); // to parse JSON bodie
 app.use(cookieParser()); // Use cookie-parser middleware to parse cookies

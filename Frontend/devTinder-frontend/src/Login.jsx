@@ -1,12 +1,20 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addUser } from "./utils/userSlice"; // Import the action to add user
+import {useNavigate} from "react-router-dom"; // Import navigate for redirection
+
 
 const Login = () => {
 
   //state variables
   const [email, setEmail] = useState("zoro@gmail.com");
   const [password, setPassword] = useState("Zoro@1234");
+  const disPatch = useDispatch();
+  // navigate the login page to home page after login
+  const navigate = useNavigate()
+  
 
   const handleLogin = async () => {
    try{
@@ -14,8 +22,14 @@ const Login = () => {
       email,
       password,
     },{withCredentials: true}); // Include credentials in the request
-   }catch (error) {
-    console.error("Login failed:", error);
+    // console.log("Login successful:", response.data);
+    // console.log(user)
+    disPatch(addUser(response.data)); // Dispatch the action to add user
+    //navigate to home page after login (return the navigate function)
+    return navigate("/");
+
+   }catch (err) {
+    console.error("Login failed:", err);
  
      
    }
@@ -57,7 +71,7 @@ const Login = () => {
             className="input validator"
             required
             placeholder="Password"
-            minlength="8"
+            minLength={"8"}
             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
             title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
           />

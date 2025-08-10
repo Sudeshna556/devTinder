@@ -30,7 +30,7 @@ authRouter.post("/signup", async(req,res) =>{
         console.error("Error during signup:", err);
     }
 
-})
+});
 
 
 
@@ -52,13 +52,20 @@ authRouter.post('/login',async(req,res) => {
         const token = await jwt.sign({_id : checkLoginUser._id}, "das@mail")
         // Set the token in cookies for client-side access
         res.cookie("token",token);
-        res.send("User authenticated successfully!!"); // shows at the browsers console->network->response
+        // console.log("Sending response with user:", checkLoginUser);
+
+         return res.status(200).json({
+            message: "User authenticated successfully!!",
+            user: checkLoginUser,
+            });
+      
+        
     } else {
         return res.status(401).send("Invalid credentials");
     }
     
     }catch(err){
-        res.status(500).send("could not authenticate user");
+        return res.status(500).send("could not authenticate user");
     }
    
 })
