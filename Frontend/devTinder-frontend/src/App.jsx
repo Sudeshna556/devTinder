@@ -1,8 +1,9 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Body from "./Body"
-import Login from "./Login"
-import Profile from "./Profile"
+import Body from "./UI_components/Body.jsx"
+import Feed from "./UI_components/Feed.jsx"
+import Login from "./UI_components/Login.jsx"
+import Profile from "./UI_components/Profile.jsx"
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore.js"; // Import the store
 

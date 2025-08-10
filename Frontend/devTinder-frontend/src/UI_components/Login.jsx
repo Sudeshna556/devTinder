@@ -2,8 +2,9 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { addUser } from "./utils/userSlice"; // Import the action to add user
+import { addUser } from "../utils/userSlice"; // Import the action to add user
 import {useNavigate} from "react-router-dom"; // Import navigate for redirection
+import { BASE_URL } from "../utils/constants"; // Import the base URL constant
 
 
 const Login = () => {
@@ -18,7 +19,9 @@ const Login = () => {
 
   const handleLogin = async () => {
    try{
-    const response = await axios.post("http://localhost:3000/login", {
+    const response = await axios.post(
+      BASE_URL + "/login",
+    {
       email,
       password,
     },{withCredentials: true}); // Include credentials in the request
