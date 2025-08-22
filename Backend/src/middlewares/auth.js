@@ -6,7 +6,8 @@ const userAuth = async(req, res, next) => {
         //read the token from the cookies
         const {token} = req.cookies;
         if(!token){
-            throw new Error("Invalid Token");
+            // return res.status(401).json({ message: 'Unauthorized' });
+            return res.status(401).send("please login");
         }
         //verify the token
         const decodeObj = await jwt.verify(token, 'das@mail'); // Use your secret key here

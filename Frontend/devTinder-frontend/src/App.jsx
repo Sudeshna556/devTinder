@@ -18,8 +18,8 @@ function App() {
               {/* rendering body component, and inside routing my login component */}
               <Route path="/" element={<Body/>} > 
                 <Route path = "/" element = {<Feed/>}/>
-                <Route path = "login" element = {<Login/>}/>
-                <Route path = "profile" element = {<Profile/>}/>
+                <Route path = "/login" element = {<Login/>}/>
+                <Route path = "/profile" element = {<Profile/>}/>
               </Route>                 
             </Routes>
           </BrowserRouter>

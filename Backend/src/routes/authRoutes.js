@@ -51,13 +51,14 @@ authRouter.post('/login',async(req,res) => {
         // The token will contain the user ID and can be used for authentication in subsequent requests
         const token = await jwt.sign({_id : checkLoginUser._id}, "das@mail")
         // Set the token in cookies for client-side access
-        res.cookie("token",token);
-        // console.log("Sending response with user:", checkLoginUser);
+         res.cookie("token",token);
 
-         return res.status(200).json({
+        return res.status(200).json({
             message: "User authenticated successfully!!",
-            user: checkLoginUser,
-            });
+            user : checkLoginUser,
+            
+
+        });
       
         
     } else {

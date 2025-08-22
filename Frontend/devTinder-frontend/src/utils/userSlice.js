@@ -2,15 +2,18 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const userSlice = createSlice({
     name : "user",
-    initialState: null,
+    initialState :  null,
     reducers : {
         addUser : (state, action) => {
             return action.payload; // This will update the state with the user data
+            // where action.payload is the user object
         },
         removeUser : (state, action) => {
             return null; // This will reset the state to null when the user logs out
         },
     }
+
+
 })
 
 export const { addUser, removeUser } = userSlice.actions;

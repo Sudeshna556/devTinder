@@ -7,14 +7,17 @@ import {useNavigate} from "react-router-dom"; // Import navigate for redirection
 import { BASE_URL } from "../utils/constants"; // Import the base URL constant
 
 
+
 const Login = () => {
 
   //state variables
   const [email, setEmail] = useState("zoro@gmail.com");
   const [password, setPassword] = useState("Zoro@1234");
-  const disPatch = useDispatch();
-  // navigate the login page to home page after login
-  const navigate = useNavigate()
+  const [error, setError] = useState("");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+ 
   
 
   const handleLogin = async () => {
@@ -24,17 +27,15 @@ const Login = () => {
     {
       email,
       password,
-    },{withCredentials: true}); // Include credentials in the request
-    // console.log("Login successful:", response.data);
-    // console.log(user)
-    disPatch(addUser(response.data)); // Dispatch the action to add user
-    //navigate to home page after login (return the navigate function)
+    },
+    {withCredentials: true}); // Include credentials in the request
+   dispatch(addUser(response.data.user || response.data));
+  //  console.log("Redux after dispatch:", store.getState());
     return navigate("/");
 
    }catch (err) {
-    console.error("Login failed:", err);
- 
-     
+    setError(err?.response?.data || "Login failed. Please try again.");
+    
    }
   }
 
@@ -70,7 +71,7 @@ const Login = () => {
           <input
             type="password"
             value={password} 
-            onChange = {(event) => setPassword(event.target.value)}
+            onChange = {(e) => setPassword(e.target.value)}
             className="input validator"
             required
             placeholder="Password"
@@ -88,7 +89,8 @@ const Login = () => {
             At least one uppercase letter
           </p>
         </div>
-        <div className="card-actions justify-center mr-14 mb-3 -mt-4">
+        <p className="text-amber-700 flex justify-center mr-12">{error}</p>
+        <div className="card-actions justify-center mr-14 mb-3 mt-4">
           <button className="btn btn-primary" onClick = {handleLogin}>Login</button>
         </div>
       </div>
