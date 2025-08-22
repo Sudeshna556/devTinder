@@ -5,6 +5,18 @@ const ConnectionRequest = require("../models/connectionRequest");  // Importing 
 const User = require("../models/user"); // Importing the User model
 
 
+//GET/feed api to Get all the Users from the databas
+userRouter.get("/feed", async (req,res)=>{
+    // const findAllUser = req.body
+    try{
+        const allUsers = await User.find({});
+        res.send(allUsers);
+        
+    } catch(err){
+        console.error("Error fetching users:", err);
+        res.status(500).send("Internal Server Error");
+    }
+})
 
 
 //check all the pending/received connection requests 

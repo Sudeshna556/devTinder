@@ -8,14 +8,22 @@ const userSchema = new mongoose.Schema({
     address:{type : String},
     phone:{type:Number},
     
-    gender : {type : String,
-        validate(value){
-            if(!["male", "female", "others"].includes(value)){
-                throw new Error("Invalid entry");
-        }
-    }
+//     gender : {type : String,
+//         validate(value){
+//             if(!["male", "female", "others"].includes(value)){
+//                 throw new Error("Invalid entry");
+//         }
+//     }
+// },
 
-    },
+    
+        gender: 
+            {
+                type: String,
+                enum: ["male", "female", "others"],
+                default: "others"
+            },
+
     age : {type : Number, min : 18},
     photoUrl : {
         type : String,

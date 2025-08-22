@@ -28,22 +28,6 @@ app.use('/', userRouter); // Use the userRouter for user-related routes
 
 
 
-
-
-//GET/feed api to Get all the Users from the databas
-app.get("/feed", async (req,res)=>{
-    // const findAllUser = req.body
-    try{
-        const allUsers = await User.find({});
-        res.send(allUsers);
-    } catch(err){
-        res.status(500).send("Internal Server Error");
-    }
-})
-
-
-
-
 connectDB()
     .then(() => {
         console.log("Database connected successfully");
