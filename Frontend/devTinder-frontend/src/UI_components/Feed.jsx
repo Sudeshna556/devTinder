@@ -15,6 +15,7 @@ const Feed = () => {
   
 
   const fetchFeed = async () => {
+    console.log("fetchFeed function called");
     try{
         if(feed) return; // If feed data is already present, no need to fetch again
       const response = await axios.get( 
