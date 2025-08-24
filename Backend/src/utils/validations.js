@@ -22,8 +22,9 @@ const validationChecks = (req) => {
 // validation checks to edit profile
 
 const validateEditProfile = (req) =>{
+    console.log("req.body in validateEditProfile:", req.body);
     
-    const allowedFieldforUpdate = ["name", "email", "address", "phone", "age","photoUrl", "skills"];
+    const allowedFieldforUpdate = ["name", "email", "address", "phone", "age","photoUrl", "skills", "desc"];
 
     const isEditAllowed = Object.keys(req.body).every((field) => allowedFieldforUpdate.includes(field));
 

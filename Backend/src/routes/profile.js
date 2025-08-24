@@ -42,17 +42,33 @@ profileRouter.patch("/profile/update", userAuth, async (req, res) => {
        if(!validateEditProfile(req)){
             throw new Error("Invalid Edit request");
         }
+        console.log("Validation input:", req.body);
         const loggedInUser = req.user;
        
 
         Object.keys(req.body).forEach((key)=>loggedInUser[key] = req.body[key]); // Update the user object with the new data
-        await loggedInUser.save(); // Save the updated user object to the database
 
-         res.send(`${loggedInUser.name}`, + "your profile updated successfully!!"); // Send the updated user object as the response
+        await loggedInUser.save(); // Save the updated user object to the database
+            
+
+         
+        // res.json({
+        //     message: `${loggedInUser.name}, your profile updated successfully!!`,
+        //     user: loggedInUser
+
+        // })
+
+         const payload = {
+          message: `${loggedInUser.name}, your profile updated successfully!!`,
+          user: loggedInUser.toObject ? loggedInUser.toObject() : loggedInUser
+        };
+        console.log("PROFILE UPDATE RESPONSE PAYLOAD:", payload); // debug log
+
+        res.status(200).json(payload);
 
        } catch(err){
        
-        return res.status(400).send(err.message);
+         res.status(400).send(err.message);
 
     }
      
