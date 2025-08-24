@@ -20,6 +20,7 @@ const Body = () => {
 
 
   const fetchUser = async () => {
+    console.log("fetchUser function called");
     if(userData) return ; // If user data is already present, no need to fetch again
     try{
 
@@ -49,7 +50,9 @@ const Body = () => {
   return (
     <div>
         <Navbar/>
-        <Outlet/>
+        <div className="pt-16">
+          <Outlet/>
+        </div>
         {/* The Outlet component is used to render child routes */}
         {/* <Footer/> */}
     </div>

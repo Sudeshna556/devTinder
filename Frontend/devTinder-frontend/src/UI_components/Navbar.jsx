@@ -13,7 +13,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
-  console.log("User from Redux store:", user);
+  // console.log("User from Redux store:", user);
   
   
 //   const user = useSelector((store) => {
@@ -34,9 +34,9 @@ const Navbar = () => {
 
   return (
     <div>
-      <div className="navbar bg-base-100 shadow-sm">
+      <div className="navbar bg-base-200 shadow-sm fixed top-0 w-full z-10">
         <div className="flex-1">
-          <Link className="btn btn-ghost text-xl" to="/">
+          <Link className="btn btn-ghost text-xl text-white" to="/">
             DevTinder｡𖦹°‧
           </Link>
         </div>
