@@ -3,6 +3,7 @@ const userRouter = express.Router();
 const { userAuth } = require("../middlewares/auth"); 
 const ConnectionRequest = require("../models/connectionRequest");  // Importing the ConnectionRequest model
 const User = require("../models/user"); // Importing the User model
+const user = require("../models/user");
 
 
 //GET/feed api to Get all the Users from the databas
@@ -50,33 +51,46 @@ userRouter.get("/check-requests/all-received-requests", userAuth, async (req, re
 });
 
 
-//check all the sent connection requests to others
+userRouter.get("/all-connections", async (req, res) => {
+    try {
+        const allConnections = await ConnectionRequest.find({});
+        res.json(allConnections);
+    } catch (err) {
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+//check all the sent connection requests to others(who are your existing connections)
 userRouter.get("/users/connections",userAuth, async(req,res) =>{
     try{
         const loggedInUserId = req.user; // Get the logged-in user's ID
+      
 
-        const userConnetions = await ConnectionRequest.find({
+        const userConnections = await ConnectionRequest.find({
             $or: [
                 { SenderId: loggedInUserId._id, status :"accepted" }, // Requests sent by the user
                 { ReceiverId: loggedInUserId._id, status :"accepted"  }, // Requests received by the user
             ]
-        }).populate("SenderId", ["name", "email", "profilePicture", "gender", "skills", "about"])
-        .populate("ReceiverId",["name", "email", "profilePicture", "gender", "skills", "about"]) // Populate senderId with user details
+        }).populate("SenderId", ["name", "email", "photoUrl", "age", "gender", "skills", "desc"])
+        .populate("ReceiverId",["name", "email", "photoUrl","age", "gender", "skills", "desc"]) // Populate senderId with user details
+
+       
 
         // If no connections found, return an empty array
-        if(userConnetions.length === 0){
-            return res.status(200).json({ message: "No connections found", data: [] });
+        if(userConnections.length === 0){
+            return res.status(200).json({ message: "No connections found", user: [] });
         }
         // Return the user connections
-       const data = userConnetions.map((row)=>{
+       const user = userConnections.map((row) => {
         if(row.SenderId._id.toString() === loggedInUserId._id.toString()){
          return row.ReceiverId
         }
          return row.SenderId; // Return the other user's details
        })
-       
+      
 
-       res.json({data});
+       res.json({  user });
     }catch(err){
         res.status(400).send("Error in fetching user connections");
     }
