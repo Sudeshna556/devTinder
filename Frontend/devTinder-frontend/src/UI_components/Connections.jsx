@@ -45,7 +45,7 @@ const Connections = () => {
 
       {connections.map((connection) => {
         // or ReceiverId depending on your logic
-        const { name, photoUrl, desc, age, skills } = connection;
+        const { _id, name, photoUrl, desc, age, skills } = connection;
 
         return (
           // <div className="border p-4 m-4 rounded-lg bg-base-300">
@@ -57,7 +57,7 @@ const Connections = () => {
           //   <h2 className="text-xl font-bold mb-2">{name}</h2>
           //   <p className="mb-2">{about}</p>
           // </div>
-          <div className="flex justify-center items-center w-full">
+          <div  key = {_id} className="flex justify-center items-center w-full">
 
           <div className="card-body flex flex-row items-center text-white border p-4 m-4 rounded-lg bg-base-300 w-full max-w-2xl">
             {/* Left: Profile Image */}

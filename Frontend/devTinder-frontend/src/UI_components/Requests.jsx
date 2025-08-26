@@ -4,6 +4,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setRequests } from "../utils/requestSlice.js";
+import { removeRequest } from '../utils/requestSlice.js';
 
 
 const Requests = () => {
@@ -11,7 +12,24 @@ const Requests = () => {
   
   const dispatch = useDispatch();
   const requests = useSelector((store) => store.requests);
-  // console.log("Connections from store:", connections);
+ 
+  //accept or reject request function(review/request)
+
+  const handleRequest = async (status, _id) => {
+    try{
+      const response = await axios.post(
+        BASE_URL + "/accept-connection-request/" + status +  "/" + _id,
+        {},
+        {withCredentials: true},
+      )
+      // After handling the request, remove that perticular user from the requests list in the UI
+      dispatch(removeRequest(_id));
+      
+
+    }catch(error){
+
+    }
+  }
 
   const fetchRequests = async () => {
     try {
@@ -34,7 +52,7 @@ const Requests = () => {
     return (
       <div className=" text-gray-400 flex justify-center items-center  mt-12">
         <h1 className="font-bold text-2xl text-gray-200 ">
-          No Requests Yet
+          No Requests Found
         </h1>
       </div>
     );
@@ -80,8 +98,12 @@ const Requests = () => {
                 </div>
 
                 <div className="card-actions mt-2 ">
-                  <button className="btn btn-primary">Accept</button>
-                  <button className="btn btn-primary">Reject</button>
+                  <button className="btn btn-primary" onClick={() => handleRequest("accepted",request._id)}>
+                   Accept
+                  </button>
+                  <button className="btn btn-primary" onClick={() => handleRequest("rejected", request._id)}>
+                   Reject
+                  </button>
                 </div>
 
                 
@@ -93,6 +115,7 @@ const Requests = () => {
   
     </div>
   );
+
 
 }
 
