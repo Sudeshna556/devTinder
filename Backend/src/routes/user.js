@@ -30,9 +30,9 @@ userRouter.get("/check-requests/all-received-requests", userAuth, async (req, re
         const receivedRequests = await ConnectionRequest.find({
              ReceiverId: loggedInUserId._id, // Using the ID of the logged-in user,
              status : "interested" // Only interested requests
-            }).populate("SenderId", ["name", "email", "profilePicture"]); // Populating SenderId with user details (name, email, profilePicture)
+            }).populate("SenderId", ["name", "email", "photoUrl","desc"]); // Populating SenderId with user details (name, email, profilePicture)
             
-
+            // console.log("Received Requests:", receivedRequests);
         // If no requests found, return an empty array
         if (receivedRequests.length === 0) {
             return res.status(200).json({ message: "No connection requests found", data: [] });
