@@ -12,10 +12,10 @@ requestRouter.post("/send-connection-request/:status/:receiverId",userAuth, asyn
         const toReceiverId = req.params.receiverId;
         const status = req.params.status;
 
-        const allowedStatuses = ['ignored', 'interested']; 
+        const allowedStatus = ['ignored', 'interested']; 
 
         // Check if the status is valid
-        if(!allowedStatuses.includes(status)){
+        if(!allowedStatus.includes(status)){
             return res
             .status(400)
             .json({message : "Invalid status type : " + status});
@@ -23,17 +23,20 @@ requestRouter.post("/send-connection-request/:status/:receiverId",userAuth, asyn
         // Check if the receiver exists
         const toUser = await User.findById(toReceiverId);
         if(!toUser){
-            return res.status(404).json({message : "Receiver not found"});
+            return res.status(404).json({message : "User not found"});
         }
 
 
         //check if the connection request already exists that can be from sender to receiver or receiver to sender
         const existingRequest = await ConnectionRequest.findOne({
             $or: [
-                { SenderId: fromSenderId, ReceiverId: toReceiverId }, // Request from sender to receiver
-                { SenderId: toReceiverId, ReceiverId: fromSenderId } // Request from receiver to sender
+                // { SenderId: fromSenderId, ReceiverId: toReceiverId }, // Request from sender to receiver
+                 { SenderId: fromSenderId, ReceiverId: toReceiverId },
+                 { SenderId: toReceiverId, ReceiverId: fromSenderId } // Request from receiver to sender
             ]
         });
+
+
         if (existingRequest) {
             return res.status(400).json({ message: "Connection request already exists" });
         }
@@ -43,6 +46,8 @@ requestRouter.post("/send-connection-request/:status/:receiverId",userAuth, asyn
             SenderId: fromSenderId,
             ReceiverId: toReceiverId,
             status: status
+
+           
         })
         //save the connection request to the database
         await connectionRequest.save();
@@ -54,11 +59,13 @@ requestRouter.post("/send-connection-request/:status/:receiverId",userAuth, asyn
 
         // res.send(user.name + " has sent a connection request");
     }catch(err){
-        res.status(400).send("Error in sending connection request");
+        console.error("Error in sending connection request:", err);
+        res.status(500).json({ message: "Internal server error", error: err.message });
+
     }
 
-
 });
+
 
 requestRouter.post("/accept-connection-request/:status/:requestId", userAuth, async (req, res) => {
     try{

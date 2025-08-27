@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 // connection request b/w two users
 
 
@@ -40,6 +41,9 @@ connectionRequestSchema.pre("save", function(next){
 })
 
 //create model for connection request
-const ConnectionRequestModel = mongoose.model("ConnectionRequest", connectionRequestSchema);
+const ConnectionRequestModel = new mongoose.model(
+    "ConnectionRequest",
+     connectionRequestSchema
+    );
 
 module.exports = ConnectionRequestModel; // Export the ConnectionRequestModel to use in other files
