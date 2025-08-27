@@ -20,7 +20,7 @@ const Body = () => {
 
 
   const fetchUser = async () => {
-    console.log("fetchUser function called");
+   
     if(userData) return ; // If user data is already present, no need to fetch again
     try{
 

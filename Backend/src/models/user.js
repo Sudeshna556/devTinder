@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    desc:{type:String, default:"Hi! I am a software developer by profession and a lifelong learner. I love coding, exploring new technologies, and building innovative solutions. In my free time, I enjoy hiking, reading tech blogs, and contributing to open-source projects."},
+    desc:{type:String, default:"Hi! I am a software developer by profession and a lifelong learner. "},
     skills: { type: [String], default: [] }, // Array of skills
     
 }, { timestamps: true });

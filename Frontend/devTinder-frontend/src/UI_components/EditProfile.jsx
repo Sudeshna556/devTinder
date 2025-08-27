@@ -9,11 +9,11 @@ import { addUser } from "../utils/userSlice";
 
 const EditProfile = ({ user }) => {
   const [name, setName] = useState(user.name);
-  const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
+  const [photoUrl, setPhotoUrl] = useState(user.photoUrl || "");
   const [email, setEmail] = useState(user.email);
-  const [age, setAge] = useState(user.age);
+  const [age, setAge] = useState(user.age || "");
   const [skills, setSkills] = useState(user.skills.join(", "));
-  const [desc, setDesc] = useState(user.desc);
+  const [desc, setDesc] = useState(user.desc || "");
   const [error, setError] = useState(null);
   const [showToast, setShowToast] = useState(false);
 

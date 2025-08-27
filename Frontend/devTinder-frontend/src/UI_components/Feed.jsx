@@ -15,7 +15,7 @@ const Feed = () => {
   
 
   const fetchFeed = async () => {
-    console.log("fetchFeed function called");
+    
     try{
         if(feed) return; // If feed data is already present, no need to fetch again
       const response = await axios.get( 
@@ -36,14 +36,17 @@ const Feed = () => {
     fetchFeed();
   }, [])
 
-  //return 
-  // feed &&(
-    
-  //   <div className=''>         
-  //     <UserCard  user = {feed[0]}/>
-  //   </div>
-  // )
+  if(!feed ) return;
 
+  if(feed.length <= 0){
+    return (
+      <div className=" text-gray-400 flex justify-center items-center  mt-12">
+        <h1 className="font-bold text-2xl text-gray-200 ">
+          No More Users in the Feed
+        </h1>
+      </div>
+    );
+  }
 
 
 
@@ -53,7 +56,7 @@ const Feed = () => {
 
       {feed && (
         <div className="justify-items-center">
-           <UserCard  user = {feed[5]}/>
+           <UserCard  user = {feed[0]}/>
         </div>
       ) }
     </div>
