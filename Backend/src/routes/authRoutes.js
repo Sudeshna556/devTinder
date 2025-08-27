@@ -21,13 +21,27 @@ authRouter.post("/signup", async(req,res) =>{
 
         // Creating a new user instance with the provided data
         const user = new User({name , email, password : passwordHash});
-        await user.save() // this returns a promise so need to use async-await or .then() to handle the response
-        res.send("User added successfully");    
+        const saveUser = await user.save() // this returns a promise so need to use async-await or .then() to handle the response
+        
+        const token =   jwt.sign({_id : saveUser._id}, "das@mail") //generating a jwt token for the user
+        // res.cookie("token", token); // Set the token in cookies for client-side access
+        res.cookie("token", token);
+
+
+        // add an expiry time to the token
+
+        return res.status(200).json(
+            {
+                message: "User signed up successfully", 
+                 user : saveUser, // avoid returning sensitive data in response,yo can sanitize it
+               
+            });
 
         //# In most of the moongose functions (such as save(), connect() etc) when we use them  we need to use async-await 
     
     }catch(err){
         console.error("Error during signup:", err);
+        return res.status(500).json({ error: err.message });
     }
 
 });
