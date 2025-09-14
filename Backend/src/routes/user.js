@@ -7,17 +7,17 @@ const user = require("../models/user");
 
 
 //GET/feed api to Get all the Users from the databas
-userRouter.get("/feed", async (req,res)=>{
-    // const findAllUser = req.body
-    try{
-        const allUsers = await User.find({});
-        res.send(allUsers);
+// userRouter.get("/feed", async (req,res)=>{
+//     // const findAllUser = req.body
+//     try{
+//         const allUsers = await User.find({});
+//         res.send(allUsers);
         
-    } catch(err){
-        console.error("Error fetching users:", err);
-        res.status(500).send("Internal Server Error");
-    }
-})
+//     } catch(err){
+//         console.error("Error fetching users:", err);
+//         res.status(500).send("Internal Server Error");
+//     }
+// })
 
 
 //check all the pending/received connection requests 
@@ -97,7 +97,14 @@ userRouter.get("/users/connections",userAuth, async(req,res) =>{
 });
 
 //check all profiles except those whom the user has already sent connection requests and those who are already connected or rejected
-userRouter.get("/users/feed", userAuth, async(req,res) => { // /users/feed?page=1&limit=50
+userRouter.get("/feed", userAuth, async(req,res) => { // /users/feed?page=1&limit=50
+
+   console.log("req.user:", req.user); 
+  if (!req.user || !req.user._id) {
+    return res.status(401).json({ message: "Please login" });
+  }
+
+
     // check for logged in user
     const loggedInUserId = req.user;
     const page = parseInt(req.query.page) || 1; // Get the skip value from query params, default to 0
@@ -105,6 +112,9 @@ userRouter.get("/users/feed", userAuth, async(req,res) => { // /users/feed?page=
     limit = limit>50 ? 50 : limit; // Limit the maximum number of results to 50
 
     const skip = (page-1) *limit; // Calculate the skip value for pagination
+
+
+
     
 
     // find all the connection requests sent by the logged-in user
@@ -113,7 +123,7 @@ userRouter.get("/users/feed", userAuth, async(req,res) => { // /users/feed?page=
             {SenderId: loggedInUserId._id}, // Requests sent by the user
             {ReceiverId: loggedInUserId._id} // Requests received by the user
         ]
-    }).select("fromUserId   toUserId");
+    }).select("SenderId   ReceiverId");
 
     //hide those users from the feed who have already sent connection requests or are already connected or rejected
     const hideUsersfromFeed = new Set();
@@ -121,7 +131,7 @@ userRouter.get("/users/feed", userAuth, async(req,res) => { // /users/feed?page=
         hideUsersfromFeed.add(req.ReceiverId.toString());
         hideUsersfromFeed.add(req.SenderId.toString());
     });
-    console.log("Hide users from feed:", hideUsersfromFeed);
+    // console.log("Hide users from feed:", hideUsersfromFeed);
 
     const users = await User .find({
         $and:

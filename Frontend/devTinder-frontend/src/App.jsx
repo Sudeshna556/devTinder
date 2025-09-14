@@ -19,7 +19,7 @@ function App() {
             <Routes>
               {/* rendering body component, and inside routing my login component */}
               <Route path="/" element={<Body/>} > 
-                <Route path = "/" element = {<Feed/>}/>
+                <Route path = "/feed" element = {<Feed/>}/>
                 <Route path = "/login" element = {<Login/>}/>
                 <Route path = "/profile" element = {<Profile/>}/>
                 <Route path = "/connections" element = {<Connections/>}/>
