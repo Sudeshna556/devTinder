@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice"; // Import the action to add user
 import { useNavigate } from "react-router-dom"; // Import navigate for redirection
 import { BASE_URL } from "../utils/constants"; // Import the base URL constant
+import loginBg from "../assets/login-bg.jpeg";
 
 
 
@@ -65,7 +66,7 @@ const Login = () => {
       <figure>
         <img
           className="w-96 h-xl object-cover"
-          src="../src/assets/login-bg.jpg"
+          src={loginBg}
           alt="Login to devtinder"
         />
       </figure>
